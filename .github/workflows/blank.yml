@@ -5,12 +5,14 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
+    
     env:
-
+      platform: aws
+      region: us-east-1
+      account: 123456789012
       username: ${{secrets.USERNAME}}
       password: ${{secrets.PASSWORD}}
-
-    runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -25,6 +27,12 @@ jobs:
 
           echo "Esto es el valor de username: ${{ env.username }}"
           echo "Esto es el valor de password: ${{ env.password }}"
+
+      - name: "Mostrando valores solo si el usuario es correcto"
+        if: ${{ env.username != '' && env.password != '' }}
+        run: |
+          echo "Si existe usuario y contraseña"
+          
       - name: "Mostrando variables por defecto"
         run: |
           echo "Evento: ${{toJSON(github.event)}}"
